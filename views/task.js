@@ -6,7 +6,7 @@ const createtaskTemplate = (task) => /*html*/`
       hx-target="closest li"
     >
       <h3>${task.title}</h3>
-      <p>${task.author}</p>
+      <p>${task.date}</p>
     </div>
     <button
       hx-delete="/tasks/${task.id}" 
