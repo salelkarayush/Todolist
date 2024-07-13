@@ -3,7 +3,8 @@ import createHomepageTemplate from './views/index.js';
 import createListTemplate from './views/list.js';
 import createtaskTemplate from './views/task.js';
 import createEditFormTemplate from './views/edit.js';
-import taskS_DATA from './data/data.js';
+import mongoose from 'mongoose';
+import Task from '../Todolist/data/task.schema.js';
 
 // create app
 const app = express();
@@ -11,62 +12,67 @@ app.use(express.urlencoded({extended: false}));
 
 // static assets
 app.use(express.static('public'));
+app.use(express.json()); 
+
+
+mongoose.connect('mongodb+srv://certifiedcoders:wLDQ5WjysaWfUIz0@eventmanager.lxtd08i.mongodb.net/todolist', {
+ 
+}).then(() => {
+  console.log('Connected to MongoDB');
+}).catch((err) => {
+  console.error('Error connecting to MongoDB', err);
+});
 
 // routes
 app.get('/', (req, res) => {
   res.send(createHomepageTemplate());
 });
 
-app.get('/tasks', (req, res) => {
-  res.send(createListTemplate(taskS_DATA));
+app.get('/tasks', async (req, res) => {
+  const tasks = await Task.find();
+  res.send(createListTemplate(tasks));
 });
 
-app.post('/tasks', (req, res) => {
-  const {title, author} = req.body;
-  const id = Math.random().toString();
 
-  taskS_DATA.push({id, title, author});
+app.post('/tasks', async (req, res) => {
+  const { title, date } = req.body;
+  console.log(title,date)
+  const task = new Task({ title, date });
 
-  res.redirect('/tasks/' + id)
+  await task.save();
+  console.log("Task added to database"); 
+  res.redirect('/tasks/' + task._id); // Use task._id to redirect to the newly created task
 });
 
-app.get('/tasks/:id', (req, res) => {
-  const {id} = req.params;
-  const task = taskS_DATA.find(b => b.id === id);
-
+app.get('/tasks/:id', async (req, res) => {
+  const { id } = req.params;
+  const task = await Task.findById(id);
   res.send(createtaskTemplate(task));
 });
 
-app.delete('/tasks/:id', (req, res) => {
-  const idx = taskS_DATA.findIndex(b => b.id === req.params.id);
-  taskS_DATA.splice(idx, 1);
-
+app.delete('/tasks/:id', async (req, res) => {
+  const { id } = req.params;
+  await Task.findByIdAndDelete(id);
   res.send();
 });
 
-app.put('/tasks/:id', (req, res) => {
-  const {title, author} = req.body;
-  const {id} = req.params;
+app.put('/tasks/:id', async (req, res) => {
+  const { title, date } = req.body;
+  const { id } = req.params;
 
-  const newtask = {title, author, id};
+  const task = await Task.findByIdAndUpdate(id, { title, date }, { new: true });
+  res.send(createtaskTemplate(task));
+});
 
-  const idx = taskS_DATA.findIndex(b => b.id === id);
-  taskS_DATA[idx] = newtask
-
-  res.send(createtaskTemplate(newtask));
-})
-
-app.get('/tasks/edit/:id', (req, res) => {
-  const task = taskS_DATA.find(b => b.id === req.params.id);
-
+app.get('/tasks/edit/:id', async (req, res) => {
+  const task = await Task.findById(req.params.id);
   res.send(createEditFormTemplate(task));
 });
 
-app.post('/tasks/search', (req, res) => {
+app.post('/tasks/search', async (req, res) => {
   const text = req.body.search.toLowerCase();
-  console.log(text);
-  
-  res.send(createListTemplate(taskS_DATA.filter(b => b.title.toLowerCase().includes(text))));
+  const tasks = await Task.find({ title: new RegExp(text, 'i') });
+  res.send(createListTemplate(tasks));
 });
 
 // listen to port
