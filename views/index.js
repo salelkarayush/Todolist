@@ -31,7 +31,7 @@ const createHomepageTemplate = () => /*html*/`
           <h2>What do you want to do?</h2>
           <form
             hx-post="/tasks" 
-            hx-target=".task-list ul" 
+            hx-target=".tasks-list ul" 
             hx-swap="beforeend" 
             hx-on::after-request="document.querySelector('form').reset()"
           >
