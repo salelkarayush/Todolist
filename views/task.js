@@ -10,6 +10,7 @@ const createtaskTemplate = (task) => /*html*/`
     </div>
     <button
       hx-delete="/tasks/${task.id}" 
+      hx-confirm="Did you complete the task?"
       hx-target="closest li" 
       hx-swap="outerHTML"
       >Done

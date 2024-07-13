@@ -12,7 +12,7 @@ const createHomepageTemplate = () => /*html*/`
       </header>
 
       <main>
-        <div class="search" style="text-align: center;">
+        <!-- <div class="search" style="text-align: center;">
           <input 
             type="search"
             name="search"
@@ -21,7 +21,7 @@ const createHomepageTemplate = () => /*html*/`
             hx-trigger="keyup changed delay:300ms"
             hx-target=".task-list"
           />
-        </div> 
+        </div>  -->
 
         <div class="tasks-list">
           <button hx-get="/tasks" hx-target=".tasks-list">Show Tasks</button>

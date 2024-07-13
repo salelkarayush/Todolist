@@ -1,5 +1,9 @@
 const createEditFormTemplate = (task) => /*html*/`
-  <form hx-put="/tasks/${task.id}" hx-target="closest li" hx-swap="outerHTML">
+  <form 
+  hx-put="/tasks/${task.id}" 
+  hx-confirm="Do you confirm the changes?" 
+  hx-target="closest li" 
+  hx-swap="outerHTML">
     <input 
       name="title"
       placeholder="title" 
@@ -11,11 +15,6 @@ const createEditFormTemplate = (task) => /*html*/`
       placeholder="due-date" 
       type="date" 
       value="${task.date}" 
-    />
-    <input 
-      id="due-time" 
-      name="due-time"
-      type="time"
     />
     <button>Confirm</button>
   </form>
