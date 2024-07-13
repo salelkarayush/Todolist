@@ -24,7 +24,7 @@ const createHomepageTemplate = () => /*html*/`
         </div> 
 
         <div class="tasks-list">
-          <button hx-get="/tasks" hx-target=".task-list">Show Tasks</button>
+          <button hx-get="/tasks" hx-target=".tasks-list">Show Tasks</button>
         </div>
 
         <div class="add-task-form">

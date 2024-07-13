@@ -12,7 +12,7 @@ const createtaskTemplate = (task) => /*html*/`
       hx-delete="/tasks/${task.id}" 
       hx-target="closest li" 
       hx-swap="outerHTML"
-      >Delete
+      >Done
     </button>
     
   </li>
