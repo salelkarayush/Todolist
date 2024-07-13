@@ -44,14 +44,9 @@ const createHomepageTemplate = () => /*html*/`
             />
             <input 
               id="due-date" 
-              name="due-date"
+              name="date"
               type="date"
               required
-            />
-            <input 
-              id="due-time" 
-              name="due-time"
-              type="time"
             />
             <button>Add</button>
           </form>
