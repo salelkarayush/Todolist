@@ -69,11 +69,11 @@ app.get('/tasks/edit/:id', async (req, res) => {
   res.send(createEditFormTemplate(task));
 });
 
-app.post('/tasks/search', async (req, res) => {
-  const text = req.body.search.toLowerCase();
-  const tasks = await Task.find({ title: new RegExp(text, 'i') });
-  res.send(createListTemplate(tasks));
-});
+// app.post('/tasks/search', async (req, res) => {
+//   const text = req.body.search.toLowerCase();
+//   const tasks = await Task.find({ title: {$regex:text,$options:'i'}});
+//   res.send(createListTemplate(tasks));
+// });
 
 // listen to port
 app.listen(3000, () => {
